@@ -22,6 +22,7 @@ import { Route as VerifierTimestampRouteImport } from './routes/verifier.timesta
 import { Route as VerifierScanRouteImport } from './routes/verifier.scan'
 import { Route as VerifierLookupRouteImport } from './routes/verifier.lookup'
 import { Route as VerifierAuditRouteImport } from './routes/verifier.audit'
+import { Route as RegulatorInstitutionsRouteImport } from './routes/regulator.institutions'
 import { Route as RegulatorGovernmentRouteImport } from './routes/regulator.government'
 import { Route as AdminUpdateRouteImport } from './routes/admin.update'
 import { Route as AdminRevokeRouteImport } from './routes/admin.revoke'
@@ -94,6 +95,11 @@ const VerifierAuditRoute = VerifierAuditRouteImport.update({
   path: '/audit',
   getParentRoute: () => VerifierRoute,
 } as any)
+const RegulatorInstitutionsRoute = RegulatorInstitutionsRouteImport.update({
+  id: '/institutions',
+  path: '/institutions',
+  getParentRoute: () => RegulatorRoute,
+} as any)
 const RegulatorGovernmentRoute = RegulatorGovernmentRouteImport.update({
   id: '/government',
   path: '/government',
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
   '/regulator/government': typeof RegulatorGovernmentRoute
+  '/regulator/institutions': typeof RegulatorInstitutionsRoute
   '/verifier/audit': typeof VerifierAuditRoute
   '/verifier/lookup': typeof VerifierLookupRoute
   '/verifier/scan': typeof VerifierScanRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
   '/regulator/government': typeof RegulatorGovernmentRoute
+  '/regulator/institutions': typeof RegulatorInstitutionsRoute
   '/verifier/audit': typeof VerifierAuditRoute
   '/verifier/lookup': typeof VerifierLookupRoute
   '/verifier/scan': typeof VerifierScanRoute
@@ -178,6 +186,7 @@ export interface FileRoutesById {
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
   '/regulator/government': typeof RegulatorGovernmentRoute
+  '/regulator/institutions': typeof RegulatorInstitutionsRoute
   '/verifier/audit': typeof VerifierAuditRoute
   '/verifier/lookup': typeof VerifierLookupRoute
   '/verifier/scan': typeof VerifierScanRoute
@@ -201,6 +210,7 @@ export interface FileRouteTypes {
     | '/admin/revoke'
     | '/admin/update'
     | '/regulator/government'
+    | '/regulator/institutions'
     | '/verifier/audit'
     | '/verifier/lookup'
     | '/verifier/scan'
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/admin/revoke'
     | '/admin/update'
     | '/regulator/government'
+    | '/regulator/institutions'
     | '/verifier/audit'
     | '/verifier/lookup'
     | '/verifier/scan'
@@ -240,6 +251,7 @@ export interface FileRouteTypes {
     | '/admin/revoke'
     | '/admin/update'
     | '/regulator/government'
+    | '/regulator/institutions'
     | '/verifier/audit'
     | '/verifier/lookup'
     | '/verifier/scan'
@@ -351,6 +363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifierAuditRouteImport
       parentRoute: typeof VerifierRoute
     }
+    '/regulator/institutions': {
+      id: '/regulator/institutions'
+      path: '/institutions'
+      fullPath: '/regulator/institutions'
+      preLoaderRoute: typeof RegulatorInstitutionsRouteImport
+      parentRoute: typeof RegulatorRoute
+    }
     '/regulator/government': {
       id: '/regulator/government'
       path: '/government'
@@ -418,11 +437,13 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface RegulatorRouteChildren {
   RegulatorGovernmentRoute: typeof RegulatorGovernmentRoute
+  RegulatorInstitutionsRoute: typeof RegulatorInstitutionsRoute
   RegulatorIndexRoute: typeof RegulatorIndexRoute
 }
 
 const RegulatorRouteChildren: RegulatorRouteChildren = {
   RegulatorGovernmentRoute: RegulatorGovernmentRoute,
+  RegulatorInstitutionsRoute: RegulatorInstitutionsRoute,
   RegulatorIndexRoute: RegulatorIndexRoute,
 }
 
