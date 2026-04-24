@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifierRouteImport } from './routes/verifier'
 import { Route as ShareRouteImport } from './routes/share'
 import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -20,6 +21,11 @@ import { Route as AdminManageRouteImport } from './routes/admin.manage'
 import { Route as AdminIssueRouteImport } from './routes/admin.issue'
 import { Route as AdminCidRouteImport } from './routes/admin.cid'
 
+const VerifierRoute = VerifierRouteImport.update({
+  id: '/verifier',
+  path: '/verifier',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShareRoute = ShareRouteImport.update({
   id: '/share',
   path: '/share',
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/verifier': typeof VerifierRoute
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/verifier': typeof VerifierRoute
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/verifier': typeof VerifierRoute
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/credentials'
     | '/share'
+    | '/verifier'
     | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/'
     | '/credentials'
     | '/share'
+    | '/verifier'
     | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/credentials'
     | '/share'
+    | '/verifier'
     | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
@@ -150,10 +162,18 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   CredentialsRoute: typeof CredentialsRoute
   ShareRoute: typeof ShareRoute
+  VerifierRoute: typeof VerifierRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verifier': {
+      id: '/verifier'
+      path: '/verifier'
+      fullPath: '/verifier'
+      preLoaderRoute: typeof VerifierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/share': {
       id: '/share'
       path: '/share'
@@ -252,6 +272,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   CredentialsRoute: CredentialsRoute,
   ShareRoute: ShareRoute,
+  VerifierRoute: VerifierRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
