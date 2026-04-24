@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifierRouteImport } from './routes/verifier'
 import { Route as ShareRouteImport } from './routes/share'
+import { Route as RegulatorRouteImport } from './routes/regulator'
 import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -34,6 +35,11 @@ const VerifierRoute = VerifierRouteImport.update({
 const ShareRoute = ShareRouteImport.update({
   id: '/share',
   path: '/share',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegulatorRoute = RegulatorRouteImport.update({
+  id: '/regulator',
+  path: '/regulator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CredentialsRoute = CredentialsRouteImport.update({
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
+  '/regulator': typeof RegulatorRoute
   '/share': typeof ShareRoute
   '/verifier': typeof VerifierRouteWithChildren
   '/admin/cid': typeof AdminCidRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
+  '/regulator': typeof RegulatorRoute
   '/share': typeof ShareRoute
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
+  '/regulator': typeof RegulatorRoute
   '/share': typeof ShareRoute
   '/verifier': typeof VerifierRouteWithChildren
   '/admin/cid': typeof AdminCidRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/credentials'
+    | '/regulator'
     | '/share'
     | '/verifier'
     | '/admin/cid'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/credentials'
+    | '/regulator'
     | '/share'
     | '/admin/cid'
     | '/admin/issue'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/credentials'
+    | '/regulator'
     | '/share'
     | '/verifier'
     | '/admin/cid'
@@ -219,6 +231,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   CredentialsRoute: typeof CredentialsRoute
+  RegulatorRoute: typeof RegulatorRoute
   ShareRoute: typeof ShareRoute
   VerifierRoute: typeof VerifierRouteWithChildren
 }
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/share'
       fullPath: '/share'
       preLoaderRoute: typeof ShareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regulator': {
+      id: '/regulator'
+      path: '/regulator'
+      fullPath: '/regulator'
+      preLoaderRoute: typeof RegulatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/credentials': {
@@ -384,6 +404,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   CredentialsRoute: CredentialsRoute,
+  RegulatorRoute: RegulatorRoute,
   ShareRoute: ShareRoute,
   VerifierRoute: VerifierRouteWithChildren,
 }
