@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ShareRouteImport } from './routes/share'
 import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ShareRoute = ShareRouteImport.update({
+  id: '/share',
+  path: '/share',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CredentialsRoute = CredentialsRouteImport.update({
   id: '/credentials',
   path: '/credentials',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
+  '/share': typeof ShareRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
+  '/share': typeof ShareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
+  '/share': typeof ShareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/credentials'
+  fullPaths: '/' | '/credentials' | '/share'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/credentials'
-  id: '__root__' | '/' | '/credentials'
+  to: '/' | '/credentials' | '/share'
+  id: '__root__' | '/' | '/credentials' | '/share'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CredentialsRoute: typeof CredentialsRoute
+  ShareRoute: typeof ShareRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/share': {
+      id: '/share'
+      path: '/share'
+      fullPath: '/share'
+      preLoaderRoute: typeof ShareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/credentials': {
       id: '/credentials'
       path: '/credentials'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CredentialsRoute: CredentialsRoute,
+  ShareRoute: ShareRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
