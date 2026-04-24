@@ -16,6 +16,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifierIndexRouteImport } from './routes/verifier.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as VerifierTimestampRouteImport } from './routes/verifier.timestamp'
 import { Route as VerifierScanRouteImport } from './routes/verifier.scan'
 import { Route as VerifierLookupRouteImport } from './routes/verifier.lookup'
 import { Route as VerifierAuditRouteImport } from './routes/verifier.audit'
@@ -59,6 +60,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const VerifierTimestampRoute = VerifierTimestampRouteImport.update({
+  id: '/timestamp',
+  path: '/timestamp',
+  getParentRoute: () => VerifierRoute,
 } as any)
 const VerifierScanRoute = VerifierScanRouteImport.update({
   id: '/scan',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/verifier/audit': typeof VerifierAuditRoute
   '/verifier/lookup': typeof VerifierLookupRoute
   '/verifier/scan': typeof VerifierScanRoute
+  '/verifier/timestamp': typeof VerifierTimestampRoute
   '/admin/': typeof AdminIndexRoute
   '/verifier/': typeof VerifierIndexRoute
 }
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/verifier/audit': typeof VerifierAuditRoute
   '/verifier/lookup': typeof VerifierLookupRoute
   '/verifier/scan': typeof VerifierScanRoute
+  '/verifier/timestamp': typeof VerifierTimestampRoute
   '/admin': typeof AdminIndexRoute
   '/verifier': typeof VerifierIndexRoute
 }
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/verifier/audit': typeof VerifierAuditRoute
   '/verifier/lookup': typeof VerifierLookupRoute
   '/verifier/scan': typeof VerifierScanRoute
+  '/verifier/timestamp': typeof VerifierTimestampRoute
   '/admin/': typeof AdminIndexRoute
   '/verifier/': typeof VerifierIndexRoute
 }
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/verifier/audit'
     | '/verifier/lookup'
     | '/verifier/scan'
+    | '/verifier/timestamp'
     | '/admin/'
     | '/verifier/'
   fileRoutesByTo: FileRoutesByTo
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/verifier/audit'
     | '/verifier/lookup'
     | '/verifier/scan'
+    | '/verifier/timestamp'
     | '/admin'
     | '/verifier'
   id:
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/verifier/audit'
     | '/verifier/lookup'
     | '/verifier/scan'
+    | '/verifier/timestamp'
     | '/admin/'
     | '/verifier/'
   fileRoutesById: FileRoutesById
@@ -261,6 +273,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/verifier/timestamp': {
+      id: '/verifier/timestamp'
+      path: '/timestamp'
+      fullPath: '/verifier/timestamp'
+      preLoaderRoute: typeof VerifierTimestampRouteImport
+      parentRoute: typeof VerifierRoute
     }
     '/verifier/scan': {
       id: '/verifier/scan'
@@ -345,6 +364,7 @@ interface VerifierRouteChildren {
   VerifierAuditRoute: typeof VerifierAuditRoute
   VerifierLookupRoute: typeof VerifierLookupRoute
   VerifierScanRoute: typeof VerifierScanRoute
+  VerifierTimestampRoute: typeof VerifierTimestampRoute
   VerifierIndexRoute: typeof VerifierIndexRoute
 }
 
@@ -352,6 +372,7 @@ const VerifierRouteChildren: VerifierRouteChildren = {
   VerifierAuditRoute: VerifierAuditRoute,
   VerifierLookupRoute: VerifierLookupRoute,
   VerifierScanRoute: VerifierScanRoute,
+  VerifierTimestampRoute: VerifierTimestampRoute,
   VerifierIndexRoute: VerifierIndexRoute,
 }
 
