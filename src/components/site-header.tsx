@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { GraduationCap, Wallet } from "lucide-react";
+import { GraduationCap, Wallet, ChevronDown, Building2, ShieldCheck, Landmark, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 export function SiteHeader() {
   return (
@@ -24,6 +25,27 @@ export function SiteHeader() {
           <Link to="/share" className="text-sm text-muted-foreground transition-colors hover:text-navy [&.active]:text-navy [&.active]:font-medium">
             Share
           </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 text-sm text-muted-foreground outline-none transition-colors hover:text-navy">
+              Consoles <ChevronDown className="h-3.5 w-3.5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-60">
+              <DropdownMenuLabel className="text-xs uppercase tracking-wider text-muted-foreground">Switch role</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/credentials"><Users className="mr-2 h-4 w-4 text-gold" /> Student / Graduate</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/admin"><Building2 className="mr-2 h-4 w-4 text-gold" /> University Admin</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/verifier"><ShieldCheck className="mr-2 h-4 w-4 text-gold" /> Verifier</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/regulator"><Landmark className="mr-2 h-4 w-4 text-gold" /> Regulator / Government</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
         <Button variant="default" size="sm" className="bg-navy text-primary-foreground hover:bg-navy/90">
           <Wallet className="mr-2 h-4 w-4" />
