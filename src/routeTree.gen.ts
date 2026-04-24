@@ -18,6 +18,7 @@ import { Route as AdminUpdateRouteImport } from './routes/admin.update'
 import { Route as AdminRevokeRouteImport } from './routes/admin.revoke'
 import { Route as AdminManageRouteImport } from './routes/admin.manage'
 import { Route as AdminIssueRouteImport } from './routes/admin.issue'
+import { Route as AdminCidRouteImport } from './routes/admin.cid'
 
 const ShareRoute = ShareRouteImport.update({
   id: '/share',
@@ -64,12 +65,18 @@ const AdminIssueRoute = AdminIssueRouteImport.update({
   path: '/issue',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCidRoute = AdminCidRouteImport.update({
+  id: '/cid',
+  path: '/cid',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/credentials'
     | '/share'
+    | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
     | '/admin/revoke'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/credentials'
     | '/share'
+    | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
     | '/admin/revoke'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/credentials'
     | '/share'
+    | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
     | '/admin/revoke'
@@ -205,10 +217,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIssueRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/cid': {
+      id: '/admin/cid'
+      path: '/cid'
+      fullPath: '/admin/cid'
+      preLoaderRoute: typeof AdminCidRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminCidRoute: typeof AdminCidRoute
   AdminIssueRoute: typeof AdminIssueRoute
   AdminManageRoute: typeof AdminManageRoute
   AdminRevokeRoute: typeof AdminRevokeRoute
@@ -217,6 +237,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCidRoute: AdminCidRoute,
   AdminIssueRoute: AdminIssueRoute,
   AdminManageRoute: AdminManageRoute,
   AdminRevokeRoute: AdminRevokeRoute,
