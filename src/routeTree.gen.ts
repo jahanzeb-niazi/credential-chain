@@ -24,6 +24,7 @@ import { Route as VerifierLookupRouteImport } from './routes/verifier.lookup'
 import { Route as VerifierAuditRouteImport } from './routes/verifier.audit'
 import { Route as RegulatorInstitutionsRouteImport } from './routes/regulator.institutions'
 import { Route as RegulatorGovernmentRouteImport } from './routes/regulator.government'
+import { Route as RegulatorActivityRouteImport } from './routes/regulator.activity'
 import { Route as AdminUpdateRouteImport } from './routes/admin.update'
 import { Route as AdminRevokeRouteImport } from './routes/admin.revoke'
 import { Route as AdminManageRouteImport } from './routes/admin.manage'
@@ -105,6 +106,11 @@ const RegulatorGovernmentRoute = RegulatorGovernmentRouteImport.update({
   path: '/government',
   getParentRoute: () => RegulatorRoute,
 } as any)
+const RegulatorActivityRoute = RegulatorActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => RegulatorRoute,
+} as any)
 const AdminUpdateRoute = AdminUpdateRouteImport.update({
   id: '/update',
   path: '/update',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
+  '/regulator/activity': typeof RegulatorActivityRoute
   '/regulator/government': typeof RegulatorGovernmentRoute
   '/regulator/institutions': typeof RegulatorInstitutionsRoute
   '/verifier/audit': typeof VerifierAuditRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
+  '/regulator/activity': typeof RegulatorActivityRoute
   '/regulator/government': typeof RegulatorGovernmentRoute
   '/regulator/institutions': typeof RegulatorInstitutionsRoute
   '/verifier/audit': typeof VerifierAuditRoute
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
+  '/regulator/activity': typeof RegulatorActivityRoute
   '/regulator/government': typeof RegulatorGovernmentRoute
   '/regulator/institutions': typeof RegulatorInstitutionsRoute
   '/verifier/audit': typeof VerifierAuditRoute
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/admin/manage'
     | '/admin/revoke'
     | '/admin/update'
+    | '/regulator/activity'
     | '/regulator/government'
     | '/regulator/institutions'
     | '/verifier/audit'
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/admin/manage'
     | '/admin/revoke'
     | '/admin/update'
+    | '/regulator/activity'
     | '/regulator/government'
     | '/regulator/institutions'
     | '/verifier/audit'
@@ -250,6 +261,7 @@ export interface FileRouteTypes {
     | '/admin/manage'
     | '/admin/revoke'
     | '/admin/update'
+    | '/regulator/activity'
     | '/regulator/government'
     | '/regulator/institutions'
     | '/verifier/audit'
@@ -377,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegulatorGovernmentRouteImport
       parentRoute: typeof RegulatorRoute
     }
+    '/regulator/activity': {
+      id: '/regulator/activity'
+      path: '/activity'
+      fullPath: '/regulator/activity'
+      preLoaderRoute: typeof RegulatorActivityRouteImport
+      parentRoute: typeof RegulatorRoute
+    }
     '/admin/update': {
       id: '/admin/update'
       path: '/update'
@@ -436,12 +455,14 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface RegulatorRouteChildren {
+  RegulatorActivityRoute: typeof RegulatorActivityRoute
   RegulatorGovernmentRoute: typeof RegulatorGovernmentRoute
   RegulatorInstitutionsRoute: typeof RegulatorInstitutionsRoute
   RegulatorIndexRoute: typeof RegulatorIndexRoute
 }
 
 const RegulatorRouteChildren: RegulatorRouteChildren = {
+  RegulatorActivityRoute: RegulatorActivityRoute,
   RegulatorGovernmentRoute: RegulatorGovernmentRoute,
   RegulatorInstitutionsRoute: RegulatorInstitutionsRoute,
   RegulatorIndexRoute: RegulatorIndexRoute,
