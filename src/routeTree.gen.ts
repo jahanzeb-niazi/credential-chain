@@ -16,6 +16,7 @@ import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifierIndexRouteImport } from './routes/verifier.index'
+import { Route as RegulatorIndexRouteImport } from './routes/regulator.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VerifierTimestampRouteImport } from './routes/verifier.timestamp'
 import { Route as VerifierScanRouteImport } from './routes/verifier.scan'
@@ -61,6 +62,11 @@ const VerifierIndexRoute = VerifierIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => VerifierRoute,
+} as any)
+const RegulatorIndexRoute = RegulatorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RegulatorRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
@@ -117,7 +123,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
-  '/regulator': typeof RegulatorRoute
+  '/regulator': typeof RegulatorRouteWithChildren
   '/share': typeof ShareRoute
   '/verifier': typeof VerifierRouteWithChildren
   '/admin/cid': typeof AdminCidRoute
@@ -130,12 +136,12 @@ export interface FileRoutesByFullPath {
   '/verifier/scan': typeof VerifierScanRoute
   '/verifier/timestamp': typeof VerifierTimestampRoute
   '/admin/': typeof AdminIndexRoute
+  '/regulator/': typeof RegulatorIndexRoute
   '/verifier/': typeof VerifierIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
-  '/regulator': typeof RegulatorRoute
   '/share': typeof ShareRoute
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
@@ -147,6 +153,7 @@ export interface FileRoutesByTo {
   '/verifier/scan': typeof VerifierScanRoute
   '/verifier/timestamp': typeof VerifierTimestampRoute
   '/admin': typeof AdminIndexRoute
+  '/regulator': typeof RegulatorIndexRoute
   '/verifier': typeof VerifierIndexRoute
 }
 export interface FileRoutesById {
@@ -154,7 +161,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
-  '/regulator': typeof RegulatorRoute
+  '/regulator': typeof RegulatorRouteWithChildren
   '/share': typeof ShareRoute
   '/verifier': typeof VerifierRouteWithChildren
   '/admin/cid': typeof AdminCidRoute
@@ -167,6 +174,7 @@ export interface FileRoutesById {
   '/verifier/scan': typeof VerifierScanRoute
   '/verifier/timestamp': typeof VerifierTimestampRoute
   '/admin/': typeof AdminIndexRoute
+  '/regulator/': typeof RegulatorIndexRoute
   '/verifier/': typeof VerifierIndexRoute
 }
 export interface FileRouteTypes {
@@ -188,12 +196,12 @@ export interface FileRouteTypes {
     | '/verifier/scan'
     | '/verifier/timestamp'
     | '/admin/'
+    | '/regulator/'
     | '/verifier/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/credentials'
-    | '/regulator'
     | '/share'
     | '/admin/cid'
     | '/admin/issue'
@@ -205,6 +213,7 @@ export interface FileRouteTypes {
     | '/verifier/scan'
     | '/verifier/timestamp'
     | '/admin'
+    | '/regulator'
     | '/verifier'
   id:
     | '__root__'
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/verifier/scan'
     | '/verifier/timestamp'
     | '/admin/'
+    | '/regulator/'
     | '/verifier/'
   fileRoutesById: FileRoutesById
 }
@@ -231,7 +241,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   CredentialsRoute: typeof CredentialsRoute
-  RegulatorRoute: typeof RegulatorRoute
+  RegulatorRoute: typeof RegulatorRouteWithChildren
   ShareRoute: typeof ShareRoute
   VerifierRoute: typeof VerifierRouteWithChildren
 }
@@ -286,6 +296,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/verifier/'
       preLoaderRoute: typeof VerifierIndexRouteImport
       parentRoute: typeof VerifierRoute
+    }
+    '/regulator/': {
+      id: '/regulator/'
+      path: '/'
+      fullPath: '/regulator/'
+      preLoaderRoute: typeof RegulatorIndexRouteImport
+      parentRoute: typeof RegulatorRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -380,6 +397,18 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface RegulatorRouteChildren {
+  RegulatorIndexRoute: typeof RegulatorIndexRoute
+}
+
+const RegulatorRouteChildren: RegulatorRouteChildren = {
+  RegulatorIndexRoute: RegulatorIndexRoute,
+}
+
+const RegulatorRouteWithChildren = RegulatorRoute._addFileChildren(
+  RegulatorRouteChildren,
+)
+
 interface VerifierRouteChildren {
   VerifierAuditRoute: typeof VerifierAuditRoute
   VerifierLookupRoute: typeof VerifierLookupRoute
@@ -404,7 +433,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   CredentialsRoute: CredentialsRoute,
-  RegulatorRoute: RegulatorRoute,
+  RegulatorRoute: RegulatorRouteWithChildren,
   ShareRoute: ShareRoute,
   VerifierRoute: VerifierRouteWithChildren,
 }
