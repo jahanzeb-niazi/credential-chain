@@ -207,3 +207,21 @@ function Step({ n, title, desc }: { n: string; title: string; desc: string }) {
 function Shield2() {
   return <ShieldCheck className="h-5 w-5" />;
 }
+
+function RoleCard({ to, icon, title, desc, cta }: { to: "/credentials" | "/admin" | "/verifier" | "/regulator"; icon: React.ReactNode; title: string; desc: string; cta: string }) {
+  return (
+    <Link
+      to={to}
+      className="group flex flex-col rounded-xl border border-border/70 bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/60 hover:shadow-elegant"
+    >
+      <span className="flex h-10 w-10 items-center justify-center rounded-md bg-secondary text-navy transition-colors group-hover:bg-gradient-gold">
+        {icon}
+      </span>
+      <h3 className="mt-4 font-serif-display text-lg text-navy">{title}</h3>
+      <p className="mt-1 flex-1 text-sm text-muted-foreground">{desc}</p>
+      <span className="mt-4 inline-flex items-center text-sm font-medium text-navy">
+        {cta} <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+      </span>
+    </Link>
+  );
+}
