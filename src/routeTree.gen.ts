@@ -14,6 +14,7 @@ import { Route as ShareRouteImport } from './routes/share'
 import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerifierIndexRouteImport } from './routes/verifier.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminUpdateRouteImport } from './routes/admin.update'
 import { Route as AdminRevokeRouteImport } from './routes/admin.revoke'
@@ -45,6 +46,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const VerifierIndexRoute = VerifierIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VerifierRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
@@ -82,25 +88,26 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
-  '/verifier': typeof VerifierRoute
+  '/verifier': typeof VerifierRouteWithChildren
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
   '/admin/': typeof AdminIndexRoute
+  '/verifier/': typeof VerifierIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
-  '/verifier': typeof VerifierRoute
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
   '/admin': typeof AdminIndexRoute
+  '/verifier': typeof VerifierIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -108,13 +115,14 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
-  '/verifier': typeof VerifierRoute
+  '/verifier': typeof VerifierRouteWithChildren
   '/admin/cid': typeof AdminCidRoute
   '/admin/issue': typeof AdminIssueRoute
   '/admin/manage': typeof AdminManageRoute
   '/admin/revoke': typeof AdminRevokeRoute
   '/admin/update': typeof AdminUpdateRoute
   '/admin/': typeof AdminIndexRoute
+  '/verifier/': typeof VerifierIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,18 +138,19 @@ export interface FileRouteTypes {
     | '/admin/revoke'
     | '/admin/update'
     | '/admin/'
+    | '/verifier/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/credentials'
     | '/share'
-    | '/verifier'
     | '/admin/cid'
     | '/admin/issue'
     | '/admin/manage'
     | '/admin/revoke'
     | '/admin/update'
     | '/admin'
+    | '/verifier'
   id:
     | '__root__'
     | '/'
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/admin/revoke'
     | '/admin/update'
     | '/admin/'
+    | '/verifier/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -162,7 +172,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   CredentialsRoute: typeof CredentialsRoute
   ShareRoute: typeof ShareRoute
-  VerifierRoute: typeof VerifierRoute
+  VerifierRoute: typeof VerifierRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +211,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/verifier/': {
+      id: '/verifier/'
+      path: '/'
+      fullPath: '/verifier/'
+      preLoaderRoute: typeof VerifierIndexRouteImport
+      parentRoute: typeof VerifierRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -267,12 +284,24 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface VerifierRouteChildren {
+  VerifierIndexRoute: typeof VerifierIndexRoute
+}
+
+const VerifierRouteChildren: VerifierRouteChildren = {
+  VerifierIndexRoute: VerifierIndexRoute,
+}
+
+const VerifierRouteWithChildren = VerifierRoute._addFileChildren(
+  VerifierRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   CredentialsRoute: CredentialsRoute,
   ShareRoute: ShareRoute,
-  VerifierRoute: VerifierRoute,
+  VerifierRoute: VerifierRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
