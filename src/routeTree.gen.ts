@@ -9,13 +9,41 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifierRouteImport } from './routes/verifier'
 import { Route as ShareRouteImport } from './routes/share'
+import { Route as RegulatorRouteImport } from './routes/regulator'
 import { Route as CredentialsRouteImport } from './routes/credentials'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerifierIndexRouteImport } from './routes/verifier.index'
+import { Route as RegulatorIndexRouteImport } from './routes/regulator.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as VerifierTimestampRouteImport } from './routes/verifier.timestamp'
+import { Route as VerifierScanRouteImport } from './routes/verifier.scan'
+import { Route as VerifierLookupRouteImport } from './routes/verifier.lookup'
+import { Route as VerifierAuditRouteImport } from './routes/verifier.audit'
+import { Route as RegulatorInstitutionsRouteImport } from './routes/regulator.institutions'
+import { Route as RegulatorGovernmentRouteImport } from './routes/regulator.government'
+import { Route as RegulatorActivityRouteImport } from './routes/regulator.activity'
+import { Route as AdminUpdateRouteImport } from './routes/admin.update'
+import { Route as AdminRevokeRouteImport } from './routes/admin.revoke'
+import { Route as AdminManageRouteImport } from './routes/admin.manage'
+import { Route as AdminIssueRouteImport } from './routes/admin.issue'
+import { Route as AdminCidRouteImport } from './routes/admin.cid'
 
+const VerifierRoute = VerifierRouteImport.update({
+  id: '/verifier',
+  path: '/verifier',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShareRoute = ShareRouteImport.update({
   id: '/share',
   path: '/share',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegulatorRoute = RegulatorRouteImport.update({
+  id: '/regulator',
+  path: '/regulator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CredentialsRoute = CredentialsRouteImport.update({
@@ -23,49 +51,258 @@ const CredentialsRoute = CredentialsRouteImport.update({
   path: '/credentials',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifierIndexRoute = VerifierIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VerifierRoute,
+} as any)
+const RegulatorIndexRoute = RegulatorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RegulatorRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const VerifierTimestampRoute = VerifierTimestampRouteImport.update({
+  id: '/timestamp',
+  path: '/timestamp',
+  getParentRoute: () => VerifierRoute,
+} as any)
+const VerifierScanRoute = VerifierScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => VerifierRoute,
+} as any)
+const VerifierLookupRoute = VerifierLookupRouteImport.update({
+  id: '/lookup',
+  path: '/lookup',
+  getParentRoute: () => VerifierRoute,
+} as any)
+const VerifierAuditRoute = VerifierAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => VerifierRoute,
+} as any)
+const RegulatorInstitutionsRoute = RegulatorInstitutionsRouteImport.update({
+  id: '/institutions',
+  path: '/institutions',
+  getParentRoute: () => RegulatorRoute,
+} as any)
+const RegulatorGovernmentRoute = RegulatorGovernmentRouteImport.update({
+  id: '/government',
+  path: '/government',
+  getParentRoute: () => RegulatorRoute,
+} as any)
+const RegulatorActivityRoute = RegulatorActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => RegulatorRoute,
+} as any)
+const AdminUpdateRoute = AdminUpdateRouteImport.update({
+  id: '/update',
+  path: '/update',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRevokeRoute = AdminRevokeRouteImport.update({
+  id: '/revoke',
+  path: '/revoke',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminManageRoute = AdminManageRouteImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIssueRoute = AdminIssueRouteImport.update({
+  id: '/issue',
+  path: '/issue',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCidRoute = AdminCidRouteImport.update({
+  id: '/cid',
+  path: '/cid',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
+  '/regulator': typeof RegulatorRouteWithChildren
   '/share': typeof ShareRoute
+  '/verifier': typeof VerifierRouteWithChildren
+  '/admin/cid': typeof AdminCidRoute
+  '/admin/issue': typeof AdminIssueRoute
+  '/admin/manage': typeof AdminManageRoute
+  '/admin/revoke': typeof AdminRevokeRoute
+  '/admin/update': typeof AdminUpdateRoute
+  '/regulator/activity': typeof RegulatorActivityRoute
+  '/regulator/government': typeof RegulatorGovernmentRoute
+  '/regulator/institutions': typeof RegulatorInstitutionsRoute
+  '/verifier/audit': typeof VerifierAuditRoute
+  '/verifier/lookup': typeof VerifierLookupRoute
+  '/verifier/scan': typeof VerifierScanRoute
+  '/verifier/timestamp': typeof VerifierTimestampRoute
+  '/admin/': typeof AdminIndexRoute
+  '/regulator/': typeof RegulatorIndexRoute
+  '/verifier/': typeof VerifierIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/credentials': typeof CredentialsRoute
   '/share': typeof ShareRoute
+  '/admin/cid': typeof AdminCidRoute
+  '/admin/issue': typeof AdminIssueRoute
+  '/admin/manage': typeof AdminManageRoute
+  '/admin/revoke': typeof AdminRevokeRoute
+  '/admin/update': typeof AdminUpdateRoute
+  '/regulator/activity': typeof RegulatorActivityRoute
+  '/regulator/government': typeof RegulatorGovernmentRoute
+  '/regulator/institutions': typeof RegulatorInstitutionsRoute
+  '/verifier/audit': typeof VerifierAuditRoute
+  '/verifier/lookup': typeof VerifierLookupRoute
+  '/verifier/scan': typeof VerifierScanRoute
+  '/verifier/timestamp': typeof VerifierTimestampRoute
+  '/admin': typeof AdminIndexRoute
+  '/regulator': typeof RegulatorIndexRoute
+  '/verifier': typeof VerifierIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/credentials': typeof CredentialsRoute
+  '/regulator': typeof RegulatorRouteWithChildren
   '/share': typeof ShareRoute
+  '/verifier': typeof VerifierRouteWithChildren
+  '/admin/cid': typeof AdminCidRoute
+  '/admin/issue': typeof AdminIssueRoute
+  '/admin/manage': typeof AdminManageRoute
+  '/admin/revoke': typeof AdminRevokeRoute
+  '/admin/update': typeof AdminUpdateRoute
+  '/regulator/activity': typeof RegulatorActivityRoute
+  '/regulator/government': typeof RegulatorGovernmentRoute
+  '/regulator/institutions': typeof RegulatorInstitutionsRoute
+  '/verifier/audit': typeof VerifierAuditRoute
+  '/verifier/lookup': typeof VerifierLookupRoute
+  '/verifier/scan': typeof VerifierScanRoute
+  '/verifier/timestamp': typeof VerifierTimestampRoute
+  '/admin/': typeof AdminIndexRoute
+  '/regulator/': typeof RegulatorIndexRoute
+  '/verifier/': typeof VerifierIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/credentials' | '/share'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/credentials'
+    | '/regulator'
+    | '/share'
+    | '/verifier'
+    | '/admin/cid'
+    | '/admin/issue'
+    | '/admin/manage'
+    | '/admin/revoke'
+    | '/admin/update'
+    | '/regulator/activity'
+    | '/regulator/government'
+    | '/regulator/institutions'
+    | '/verifier/audit'
+    | '/verifier/lookup'
+    | '/verifier/scan'
+    | '/verifier/timestamp'
+    | '/admin/'
+    | '/regulator/'
+    | '/verifier/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/credentials' | '/share'
-  id: '__root__' | '/' | '/credentials' | '/share'
+  to:
+    | '/'
+    | '/credentials'
+    | '/share'
+    | '/admin/cid'
+    | '/admin/issue'
+    | '/admin/manage'
+    | '/admin/revoke'
+    | '/admin/update'
+    | '/regulator/activity'
+    | '/regulator/government'
+    | '/regulator/institutions'
+    | '/verifier/audit'
+    | '/verifier/lookup'
+    | '/verifier/scan'
+    | '/verifier/timestamp'
+    | '/admin'
+    | '/regulator'
+    | '/verifier'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/credentials'
+    | '/regulator'
+    | '/share'
+    | '/verifier'
+    | '/admin/cid'
+    | '/admin/issue'
+    | '/admin/manage'
+    | '/admin/revoke'
+    | '/admin/update'
+    | '/regulator/activity'
+    | '/regulator/government'
+    | '/regulator/institutions'
+    | '/verifier/audit'
+    | '/verifier/lookup'
+    | '/verifier/scan'
+    | '/verifier/timestamp'
+    | '/admin/'
+    | '/regulator/'
+    | '/verifier/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CredentialsRoute: typeof CredentialsRoute
+  RegulatorRoute: typeof RegulatorRouteWithChildren
   ShareRoute: typeof ShareRoute
+  VerifierRoute: typeof VerifierRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verifier': {
+      id: '/verifier'
+      path: '/verifier'
+      fullPath: '/verifier'
+      preLoaderRoute: typeof VerifierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/share': {
       id: '/share'
       path: '/share'
       fullPath: '/share'
       preLoaderRoute: typeof ShareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regulator': {
+      id: '/regulator'
+      path: '/regulator'
+      fullPath: '/regulator'
+      preLoaderRoute: typeof RegulatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/credentials': {
@@ -75,6 +312,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CredentialsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -82,13 +326,179 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verifier/': {
+      id: '/verifier/'
+      path: '/'
+      fullPath: '/verifier/'
+      preLoaderRoute: typeof VerifierIndexRouteImport
+      parentRoute: typeof VerifierRoute
+    }
+    '/regulator/': {
+      id: '/regulator/'
+      path: '/'
+      fullPath: '/regulator/'
+      preLoaderRoute: typeof RegulatorIndexRouteImport
+      parentRoute: typeof RegulatorRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/verifier/timestamp': {
+      id: '/verifier/timestamp'
+      path: '/timestamp'
+      fullPath: '/verifier/timestamp'
+      preLoaderRoute: typeof VerifierTimestampRouteImport
+      parentRoute: typeof VerifierRoute
+    }
+    '/verifier/scan': {
+      id: '/verifier/scan'
+      path: '/scan'
+      fullPath: '/verifier/scan'
+      preLoaderRoute: typeof VerifierScanRouteImport
+      parentRoute: typeof VerifierRoute
+    }
+    '/verifier/lookup': {
+      id: '/verifier/lookup'
+      path: '/lookup'
+      fullPath: '/verifier/lookup'
+      preLoaderRoute: typeof VerifierLookupRouteImport
+      parentRoute: typeof VerifierRoute
+    }
+    '/verifier/audit': {
+      id: '/verifier/audit'
+      path: '/audit'
+      fullPath: '/verifier/audit'
+      preLoaderRoute: typeof VerifierAuditRouteImport
+      parentRoute: typeof VerifierRoute
+    }
+    '/regulator/institutions': {
+      id: '/regulator/institutions'
+      path: '/institutions'
+      fullPath: '/regulator/institutions'
+      preLoaderRoute: typeof RegulatorInstitutionsRouteImport
+      parentRoute: typeof RegulatorRoute
+    }
+    '/regulator/government': {
+      id: '/regulator/government'
+      path: '/government'
+      fullPath: '/regulator/government'
+      preLoaderRoute: typeof RegulatorGovernmentRouteImport
+      parentRoute: typeof RegulatorRoute
+    }
+    '/regulator/activity': {
+      id: '/regulator/activity'
+      path: '/activity'
+      fullPath: '/regulator/activity'
+      preLoaderRoute: typeof RegulatorActivityRouteImport
+      parentRoute: typeof RegulatorRoute
+    }
+    '/admin/update': {
+      id: '/admin/update'
+      path: '/update'
+      fullPath: '/admin/update'
+      preLoaderRoute: typeof AdminUpdateRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/revoke': {
+      id: '/admin/revoke'
+      path: '/revoke'
+      fullPath: '/admin/revoke'
+      preLoaderRoute: typeof AdminRevokeRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/manage': {
+      id: '/admin/manage'
+      path: '/manage'
+      fullPath: '/admin/manage'
+      preLoaderRoute: typeof AdminManageRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/issue': {
+      id: '/admin/issue'
+      path: '/issue'
+      fullPath: '/admin/issue'
+      preLoaderRoute: typeof AdminIssueRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cid': {
+      id: '/admin/cid'
+      path: '/cid'
+      fullPath: '/admin/cid'
+      preLoaderRoute: typeof AdminCidRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminCidRoute: typeof AdminCidRoute
+  AdminIssueRoute: typeof AdminIssueRoute
+  AdminManageRoute: typeof AdminManageRoute
+  AdminRevokeRoute: typeof AdminRevokeRoute
+  AdminUpdateRoute: typeof AdminUpdateRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCidRoute: AdminCidRoute,
+  AdminIssueRoute: AdminIssueRoute,
+  AdminManageRoute: AdminManageRoute,
+  AdminRevokeRoute: AdminRevokeRoute,
+  AdminUpdateRoute: AdminUpdateRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface RegulatorRouteChildren {
+  RegulatorActivityRoute: typeof RegulatorActivityRoute
+  RegulatorGovernmentRoute: typeof RegulatorGovernmentRoute
+  RegulatorInstitutionsRoute: typeof RegulatorInstitutionsRoute
+  RegulatorIndexRoute: typeof RegulatorIndexRoute
+}
+
+const RegulatorRouteChildren: RegulatorRouteChildren = {
+  RegulatorActivityRoute: RegulatorActivityRoute,
+  RegulatorGovernmentRoute: RegulatorGovernmentRoute,
+  RegulatorInstitutionsRoute: RegulatorInstitutionsRoute,
+  RegulatorIndexRoute: RegulatorIndexRoute,
+}
+
+const RegulatorRouteWithChildren = RegulatorRoute._addFileChildren(
+  RegulatorRouteChildren,
+)
+
+interface VerifierRouteChildren {
+  VerifierAuditRoute: typeof VerifierAuditRoute
+  VerifierLookupRoute: typeof VerifierLookupRoute
+  VerifierScanRoute: typeof VerifierScanRoute
+  VerifierTimestampRoute: typeof VerifierTimestampRoute
+  VerifierIndexRoute: typeof VerifierIndexRoute
+}
+
+const VerifierRouteChildren: VerifierRouteChildren = {
+  VerifierAuditRoute: VerifierAuditRoute,
+  VerifierLookupRoute: VerifierLookupRoute,
+  VerifierScanRoute: VerifierScanRoute,
+  VerifierTimestampRoute: VerifierTimestampRoute,
+  VerifierIndexRoute: VerifierIndexRoute,
+}
+
+const VerifierRouteWithChildren = VerifierRoute._addFileChildren(
+  VerifierRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   CredentialsRoute: CredentialsRoute,
+  RegulatorRoute: RegulatorRouteWithChildren,
   ShareRoute: ShareRoute,
+  VerifierRoute: VerifierRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

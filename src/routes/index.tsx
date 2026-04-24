@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, ShieldCheck, Wallet, QrCode, Link2,
-  GraduationCap, Lock, Sparkles, FileCheck2,
+  GraduationCap, Lock, Sparkles, FileCheck2, Building2, Landmark, Users,
 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
@@ -140,6 +140,24 @@ function Index() {
         </div>
       </section>
 
+      {/* ROLES */}
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-gold">For every actor</p>
+          <h2 className="mt-3 text-4xl font-semibold text-navy">One ledger, four consoles</h2>
+          <p className="mt-4 text-muted-foreground">
+            CredLedger serves the whole credentialing chain — from government down to graduates.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <RoleCard to="/credentials" icon={<Users className="h-5 w-5" />} title="Student / Graduate" desc="Own your credentials, share them on your terms." cta="Open wallet" />
+          <RoleCard to="/admin" icon={<Building2 className="h-5 w-5" />} title="University Admin" desc="Issue, manage, revoke and update credentials on chain." cta="Open admin" />
+          <RoleCard to="/verifier" icon={<ShieldCheck className="h-5 w-5" />} title="Verifier" desc="Validate credentials trustlessly — no university calls." cta="Verify now" />
+          <RoleCard to="/regulator" icon={<Landmark className="h-5 w-5" />} title="Regulator & Gov" desc="Onboard regulators, accredit institutions, audit activity." cta="Open console" />
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="mx-auto max-w-6xl px-6 py-24">
         <Card className="overflow-hidden border-0 bg-gradient-hero p-12 text-primary-foreground shadow-elegant">
@@ -188,4 +206,22 @@ function Step({ n, title, desc }: { n: string; title: string; desc: string }) {
 
 function Shield2() {
   return <ShieldCheck className="h-5 w-5" />;
+}
+
+function RoleCard({ to, icon, title, desc, cta }: { to: "/credentials" | "/admin" | "/verifier" | "/regulator"; icon: React.ReactNode; title: string; desc: string; cta: string }) {
+  return (
+    <Link
+      to={to}
+      className="group flex flex-col rounded-xl border border-border/70 bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/60 hover:shadow-elegant"
+    >
+      <span className="flex h-10 w-10 items-center justify-center rounded-md bg-secondary text-navy transition-colors group-hover:bg-gradient-gold">
+        {icon}
+      </span>
+      <h3 className="mt-4 font-serif-display text-lg text-navy">{title}</h3>
+      <p className="mt-1 flex-1 text-sm text-muted-foreground">{desc}</p>
+      <span className="mt-4 inline-flex items-center text-sm font-medium text-navy">
+        {cta} <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+      </span>
+    </Link>
+  );
 }
