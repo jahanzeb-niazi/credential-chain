@@ -116,7 +116,7 @@ public final class EthereumJsonRpcService implements EthereumService {
 
     private static List<AuditEvent> parseLogs(String response) {
         List<AuditEvent> events = new ArrayList<>();
-        String[] chunks = response.split("\\{\");
+        String[] chunks = response.split("\\{");
         for (String chunk : chunks) {
             if (!chunk.contains("transactionHash")) continue;
             String tx = extractField(chunk, "transactionHash");
