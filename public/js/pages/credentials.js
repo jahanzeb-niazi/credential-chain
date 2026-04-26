@@ -1,5 +1,8 @@
 import { publicLayout, wirePublicHeader, emptyState } from "../layout.js";
 import { icons } from "../icons.js";
+import { wallet } from "../hooks/wallet.js";
+import { contract } from "../hooks/contract.js";
+import { notice, setHtml } from "../utils/dom.js";
 
 export function credentialsPage({ path }) {
   const body = `
@@ -17,12 +20,12 @@ export function credentialsPage({ path }) {
         <a class="btn btn-primary btn-sm" href="#/share">${icons.link()} Share a credential</a>
       </div>
 
-      ${emptyState({
+      <div id="credentials-list">${emptyState({
         icon: icons.cap(),
         title: "No credentials in this wallet yet",
         description: "Once a university issues a credential to your address, it will appear here automatically. Connect your wallet to load on-chain records.",
         action: `<button class="btn btn-primary" id="connect-wallet-2">${icons.wallet()} Connect Wallet</button>`,
-      })}
+      })}</div>
 
       <div class="notice" style="margin-top:32px">
         Integration hook: <span class="mono">contract.getCredentialsByHolder(address)</span> will populate this list once wired to your Solidity contract.
@@ -34,7 +37,13 @@ export function credentialsPage({ path }) {
     mount: () => {
       wirePublicHeader();
       const b = document.getElementById("connect-wallet-2");
-      if (b) b.addEventListener("click", () => import("../hooks/wallet.js").then(m => m.wallet.connect()));
+      if (b) b.addEventListener("click", async () => {
+        try {
+          const address = await wallet.connect();
+          const ids = await contract.getCredentialsByHolder(address);
+          setHtml("#credentials-list", ids.length ? `<div class="grid-3">${ids.map(id => `<a class="card" href="#/verifier/lookup?id=${id}"><h3 class="card-title">Credential #${id}</h3><p class="muted">Open verification record</p></a>`).join("")}</div>` : document.querySelector("#credentials-list").innerHTML);
+        } catch (error) { notice(error.message, "error"); }
+      });
     },
   };
 }
