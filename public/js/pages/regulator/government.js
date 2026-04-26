@@ -1,6 +1,8 @@
 import { regulatorShell, wireRoleShell } from "./_shell.js";
 import { pageHeader } from "../../layout.js";
 import { icons } from "../../icons.js";
+import { contract } from "../../hooks/contract.js";
+import { notice, value } from "../../utils/dom.js";
 
 export function regulatorGovernment({ path }) {
   const body = `
@@ -12,9 +14,9 @@ export function regulatorGovernment({ path }) {
     <div class="grid-2">
       <div class="card">
         <h3 class="card-title">New regulator</h3>
-        <div class="field"><label class="label">Agency name</label><input class="input" placeholder="Ministry of Higher Education"/></div>
-        <div class="field"><label class="label">Country / jurisdiction</label><input class="input" placeholder="ISO code, e.g. IN, US-CA"/></div>
-        <div class="field"><label class="label">Wallet address</label><input class="input mono" placeholder="0x…"/></div>
+        <div class="field"><label class="label">Agency name</label><input id="regulator-name" class="input" placeholder="Ministry of Higher Education"/></div>
+        <div class="field"><label class="label">Country / jurisdiction</label><input id="regulator-jurisdiction" class="input" placeholder="ISO code, e.g. IN, US-CA"/></div>
+        <div class="field"><label class="label">Wallet address</label><input id="regulator-wallet" class="input mono" placeholder="0x…"/></div>
         <div class="field"><label class="label">Permissions</label>
           <div class="stack">
             <label class="row"><input type="checkbox" checked/> Authorize institutions</label>
@@ -22,7 +24,7 @@ export function regulatorGovernment({ path }) {
             <label class="row"><input type="checkbox"/> Add other regulators</label>
           </div>
         </div>
-        <button class="btn btn-gold" disabled>${icons.landmark()} Add regulator</button>
+        <button id="add-regulator" class="btn btn-gold">${icons.landmark()} Add regulator</button>
         <p class="help">Wires to <span class="mono">contract.addRegulator(address)</span>.</p>
       </div>
       <div class="card">
@@ -37,5 +39,11 @@ export function regulatorGovernment({ path }) {
       </div>
     </div>
   `;
-  return { html: regulatorShell({ currentPath: path, body }), mount: wireRoleShell };
+  return { html: regulatorShell({ currentPath: path, body }), mount: () => {
+    wireRoleShell();
+    document.getElementById("add-regulator")?.addEventListener("click", async () => {
+      try { const tx = await contract.addRegulator(value("#regulator-wallet"), value("#regulator-name"), value("#regulator-jurisdiction")); notice(`Regulator transaction submitted: ${tx}`, "success"); }
+      catch (error) { notice(error.message, "error"); }
+    });
+  } };
 }
