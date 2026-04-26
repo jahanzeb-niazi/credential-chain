@@ -1,5 +1,12 @@
-// IPFS integration stub — wire to your IPFS node / gateway.
+import { api } from "./api.js";
+
 export const ipfs = {
-  async upload(metadata)         { console.log("[ipfs] upload", metadata); return "Qm..." ; },
-  async fetch(cid)               { console.log("[ipfs] fetch", cid); return null; },
+  async upload(metadata) {
+    const result = await api.uploadMetadata(metadata);
+    return result.cid;
+  },
+  async fetch(cid) {
+    const result = await api.fetchIpfs(cid);
+    return result.metadata;
+  },
 };
