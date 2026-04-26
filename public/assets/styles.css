@@ -258,6 +258,16 @@ img { max-width: 100%; display: block; }
 .table tr:last-child td { border-bottom: 0; }
 .table .actions { display: flex; gap: 6px; }
 
+.toast {
+  position: fixed; right: 18px; bottom: 18px; z-index: 100;
+  max-width: 380px; padding: 12px 14px; border-radius: 8px;
+  background: var(--navy); color: #fff; box-shadow: var(--shadow-elegant);
+  font-size: 13px;
+}
+.toast.error { background: var(--danger); }
+.toast.success { background: var(--success); }
+.result-box { margin-top: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--navy-50); word-break: break-word; }
+
 /* ---------- Pills / Badges ---------- */
 .pill {
   display: inline-flex; align-items: center; gap: 6px;

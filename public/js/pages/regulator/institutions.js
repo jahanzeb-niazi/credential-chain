@@ -1,6 +1,8 @@
 import { regulatorShell, wireRoleShell } from "./_shell.js";
 import { pageHeader } from "../../layout.js";
 import { icons } from "../../icons.js";
+import { contract } from "../../hooks/contract.js";
+import { notice, value } from "../../utils/dom.js";
 
 export function regulatorInstitutions({ path }) {
   const body = `
@@ -12,13 +14,13 @@ export function regulatorInstitutions({ path }) {
     <div class="grid-2">
       <div class="card">
         <h3 class="card-title">Authorize a university</h3>
-        <div class="field"><label class="label">Institution name</label><input class="input" placeholder="University of Lovable"/></div>
-        <div class="field"><label class="label">Accreditation ID</label><input class="input" placeholder="UGC-12345"/></div>
-        <div class="field"><label class="label">Issuer wallet</label><input class="input mono" placeholder="0x…"/></div>
+        <div class="field"><label class="label">Institution name</label><input id="institution-name" class="input" placeholder="University of Lovable"/></div>
+        <div class="field"><label class="label">Accreditation ID</label><input id="accreditation-id" class="input" placeholder="UGC-12345"/></div>
+        <div class="field"><label class="label">Issuer wallet</label><input id="institution-wallet" class="input mono" placeholder="0x…"/></div>
         <div class="field"><label class="label">Authorization scope</label>
           <select class="select"><option>All credential types</option><option>Degrees only</option><option>Certificates only</option></select>
         </div>
-        <button class="btn btn-gold" disabled>${icons.check()} Authorize</button>
+        <button id="authorize-institution" class="btn btn-gold">${icons.check()} Authorize</button>
         <p class="help">Wires to <span class="mono">contract.authorizeInstitution(addr, name)</span>.</p>
       </div>
       <div class="card">
@@ -34,5 +36,11 @@ export function regulatorInstitutions({ path }) {
       </div>
     </div>
   `;
-  return { html: regulatorShell({ currentPath: path, body }), mount: wireRoleShell };
+  return { html: regulatorShell({ currentPath: path, body }), mount: () => {
+    wireRoleShell();
+    document.getElementById("authorize-institution")?.addEventListener("click", async () => {
+      try { const tx = await contract.authorizeInstitution(value("#institution-wallet"), value("#institution-name"), value("#accreditation-id")); notice(`Authorization submitted: ${tx}`, "success"); }
+      catch (error) { notice(error.message, "error"); }
+    });
+  } };
 }
