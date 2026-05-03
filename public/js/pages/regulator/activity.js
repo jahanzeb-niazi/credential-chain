@@ -44,10 +44,23 @@ export function regulatorActivity({ path }) {
   `;
   return { html: regulatorShell({ currentPath: path, body }), mount: () => {
     wireRoleShell();
+    const presetWallet = new URLSearchParams(location.hash.split("?")[1] || "").get("wallet");
+    if (presetWallet) document.getElementById("institution-wallet").value = presetWallet;
     document.getElementById("load-activity")?.addEventListener("click", async () => {
-      try { const { events } = await api.institutionActivity(value("#institution-wallet")); setText("#issued-count", events.length); setText("#updated-count", "—"); setText("#revoked-count", "—"); setHtml("#activity-result", `<div class="card"><pre class="mono">${JSON.stringify(events, null, 2)}</pre></div>`); }
+      try {
+        const { events = [] } = await api.institutionActivity(value("#institution-wallet"));
+        const counts = { CredentialIssued: 0, CredentialUpdated: 0, CredentialRevoked: 0 };
+        events.forEach(e => { if (counts[e.type] !== undefined) counts[e.type]++; });
+        setText("#issued-count", counts.CredentialIssued);
+        setText("#updated-count", counts.CredentialUpdated);
+        setText("#revoked-count", counts.CredentialRevoked);
+        setHtml("#activity-result", events.length
+          ? `<div class="card"><div class="timeline">${events.map(e => `<div class="tl-item"><h5>${e.type}</h5><p class="meta">Block #${e.blockNumber} · <span class="mono">${e.transactionHash.slice(0,18)}…</span></p></div>`).join("")}</div></div>`
+          : `<div class="card"><p class="muted">No events for this institution.</p></div>`);
+      }
       catch (error) { notice(error.message, "error"); }
     });
+    if (presetWallet) document.getElementById("load-activity").click();
     document.getElementById("suspend-institution")?.addEventListener("click", async () => {
       try { const tx = await contract.suspendInstitution(value("#institution-wallet")); notice(`Suspension submitted: ${tx}`, "success"); }
       catch (error) { notice(error.message, "error"); }

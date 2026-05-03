@@ -2,6 +2,7 @@ import { regulatorShell, wireRoleShell } from "./_shell.js";
 import { pageHeader } from "../../layout.js";
 import { icons } from "../../icons.js";
 import { contract } from "../../hooks/contract.js";
+import { api } from "../../hooks/api.js";
 import { notice, value } from "../../utils/dom.js";
 
 export function regulatorGovernment({ path }) {
@@ -32,15 +33,32 @@ export function regulatorGovernment({ path }) {
         <p class="card-desc">Currently configured governance addresses.</p>
         <table class="table">
           <thead><tr><th>Agency</th><th>Wallet</th><th>Status</th></tr></thead>
-          <tbody>
+          <tbody id="regulators-tbody">
             <tr><td colspan="3" class="muted" style="text-align:center; padding:32px;">No regulators loaded.</td></tr>
           </tbody>
         </table>
+        <button id="reload-regs" class="btn btn-outline btn-sm" style="margin-top:8px">${icons.search()} Reload registry</button>
       </div>
     </div>
   `;
   return { html: regulatorShell({ currentPath: path, body }), mount: () => {
     wireRoleShell();
+    const reload = async () => {
+      try {
+        const { regulators = [] } = await api.listRegulators();
+        if (!regulators.length) { document.getElementById("regulators-tbody").innerHTML = `<tr><td colspan="3" class="muted" style="text-align:center; padding:32px;">No regulators on-chain yet.</td></tr>`; return; }
+        const rows = await Promise.all(regulators.map(async (addr) => {
+          try {
+            const { regulator } = await api.getRegulator(addr);
+            const status = regulator.active ? `<span class="pill pill-info">Active</span>` : `<span class="pill pill-danger">Inactive</span>`;
+            return `<tr><td>${regulator.name || "—"}<br/><small class="muted">${regulator.jurisdiction || ""}</small></td><td class="mono">${addr}</td><td>${status}</td></tr>`;
+          } catch { return `<tr><td>—</td><td class="mono">${addr}</td><td>—</td></tr>`; }
+        }));
+        document.getElementById("regulators-tbody").innerHTML = rows.join("");
+      } catch (e) { notice(e.message, "error"); }
+    };
+    document.getElementById("reload-regs")?.addEventListener("click", reload);
+    reload();
     document.getElementById("add-regulator")?.addEventListener("click", async () => {
       try { const tx = await contract.addRegulator(value("#regulator-wallet"), value("#regulator-name"), value("#regulator-jurisdiction")); notice(`Regulator transaction submitted: ${tx}`, "success"); }
       catch (error) { notice(error.message, "error"); }
