@@ -20,4 +20,9 @@ export const api = {
   verify: (id) => request(`/api/verify?id=${encodeURIComponent(id)}`),
   audit: (id) => request(`/api/audit?id=${encodeURIComponent(id)}`),
   institutionActivity: (wallet) => request(`/api/institution/activity?wallet=${encodeURIComponent(wallet)}`),
+  studentActivity: (wallet) => request(`/api/student/activity?wallet=${encodeURIComponent(wallet)}`),
+  listRegulators: () => request(`/api/regulators`),
+  listInstitutions: () => request(`/api/institutions`),
+  getRegulator: (wallet) => request(`/api/regulator?wallet=${encodeURIComponent(wallet)}`),
+  getInstitution: (wallet) => request(`/api/institution?wallet=${encodeURIComponent(wallet)}`),
 };

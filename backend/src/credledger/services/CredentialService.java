@@ -5,6 +5,7 @@ import credledger.models.Credential;
 import credledger.models.VerificationResult;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class CredentialService {
@@ -52,12 +53,49 @@ public final class CredentialService {
         return ethereumService.getInstitutionActivity(wallet);
     }
 
+    public List<AuditEvent> studentActivity(String wallet) throws IOException, InterruptedException {
+        validateAddress(wallet);
+        return ethereumService.getStudentActivity(wallet);
+    }
+
+    public List<String> allRegulators() throws IOException, InterruptedException {
+        return ethereumService.getAllRegulators();
+    }
+
+    public List<String> allInstitutions() throws IOException, InterruptedException {
+        return ethereumService.getAllInstitutions();
+    }
+
+    public Map<String, Object> regulatorProfile(String wallet) throws IOException, InterruptedException {
+        validateAddress(wallet);
+        return ethereumService.getRegulatorProfile(wallet);
+    }
+
+    public Map<String, Object> institutionProfile(String wallet) throws IOException, InterruptedException {
+        validateAddress(wallet);
+        return ethereumService.getInstitutionProfile(wallet);
+    }
+
     public static String idListJson(List<Long> ids) {
         return ids.stream().map(String::valueOf).collect(Collectors.joining(",", "[", "]"));
     }
 
     public static String eventsJson(List<AuditEvent> events) {
         return events.stream().map(AuditEvent::toJson).collect(Collectors.joining(",", "[", "]"));
+    }
+
+    public static String addressListJson(List<String> addrs) {
+        return addrs.stream().map(credledger.util.JsonUtil::quote).collect(Collectors.joining(",", "[", "]"));
+    }
+
+    public static String mapToJson(Map<String, Object> map) {
+        return map.entrySet().stream().map(e -> credledger.util.JsonUtil.quote(e.getKey()) + ":" + valueToJson(e.getValue())).collect(Collectors.joining(",", "{", "}"));
+    }
+
+    private static String valueToJson(Object v) {
+        if (v == null) return "null";
+        if (v instanceof Boolean || v instanceof Number) return v.toString();
+        return credledger.util.JsonUtil.quote(v.toString());
     }
 
     private static void validateId(long id) {
