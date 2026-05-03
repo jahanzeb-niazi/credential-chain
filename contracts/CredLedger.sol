@@ -40,6 +40,10 @@ contract CredLedger {
     mapping(uint256 => Credential) private credentials;
     mapping(address => uint256[]) private studentCredentialIds;
     mapping(address => uint256[]) private institutionCredentialIds;
+    address[] private regulatorList;
+    address[] private institutionList;
+    mapping(address => bool) private regulatorTracked;
+    mapping(address => bool) private institutionTracked;
 
     event RegulatorAdded(address indexed regulator, string name, string jurisdiction, uint256 timestamp);
     event RegulatorRemoved(address indexed regulator, uint256 timestamp);
@@ -74,6 +78,8 @@ contract CredLedger {
     constructor() {
         government = msg.sender;
         regulators[msg.sender] = Regulator("Government Root", "GLOBAL", true, block.timestamp);
+        regulatorList.push(msg.sender);
+        regulatorTracked[msg.sender] = true;
         emit RegulatorAdded(msg.sender, "Government Root", "GLOBAL", block.timestamp);
     }
 
@@ -81,6 +87,10 @@ contract CredLedger {
         require(regulator != address(0), "Invalid regulator");
         require(bytes(name).length > 0, "Name required");
         regulators[regulator] = Regulator(name, jurisdiction, true, block.timestamp);
+        if (!regulatorTracked[regulator]) {
+            regulatorList.push(regulator);
+            regulatorTracked[regulator] = true;
+        }
         emit RegulatorAdded(regulator, name, jurisdiction, block.timestamp);
     }
 
@@ -96,6 +106,10 @@ contract CredLedger {
         require(bytes(name).length > 0, "Name required");
         require(bytes(accreditationId).length > 0, "Accreditation required");
         institutions[institution] = Institution(name, accreditationId, true, false, msg.sender, block.timestamp);
+        if (!institutionTracked[institution]) {
+            institutionList.push(institution);
+            institutionTracked[institution] = true;
+        }
         emit InstitutionAuthorized(institution, msg.sender, name, accreditationId, block.timestamp);
     }
 
@@ -180,5 +194,21 @@ contract CredLedger {
     function isAuthorizedInstitution(address account) external view returns (bool) {
         Institution memory institution = institutions[account];
         return institution.authorized && !institution.suspended;
+    }
+
+    function getAllRegulators() external view returns (address[] memory) {
+        return regulatorList;
+    }
+
+    function getAllInstitutions() external view returns (address[] memory) {
+        return institutionList;
+    }
+
+    function getRegulator(address account) external view returns (Regulator memory) {
+        return regulators[account];
+    }
+
+    function getInstitution(address account) external view returns (Institution memory) {
+        return institutions[account];
     }
 }
