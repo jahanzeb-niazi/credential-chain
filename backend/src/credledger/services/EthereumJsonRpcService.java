@@ -101,8 +101,35 @@ public final class EthereumJsonRpcService implements EthereumService {
     }
 
     @Override public List<AuditEvent> getInstitutionActivity(String wallet) throws IOException, InterruptedException {
-        // For Issued: institution is topic[2]; for Updated/Revoked: institution is topic[2]
-        return logsForTopic(2, padTopicAddress(wallet));
+        // CredentialIssued(uint256 indexed id, address indexed student, address indexed institution, ...)
+        //   institution = topic[3]
+        // CredentialUpdated(uint256 indexed id, address indexed institution, ...)
+        //   institution = topic[2]
+        // CredentialRevoked(uint256 indexed id, address indexed institution, ...)
+        //   institution = topic[2]
+        List<AuditEvent> issued  = logsForTopicAndType(3, padTopicAddress(wallet), TOPIC_ISSUED);
+        List<AuditEvent> updated = logsForTopicAndType(2, padTopicAddress(wallet), TOPIC_UPDATED);
+        List<AuditEvent> revoked = logsForTopicAndType(2, padTopicAddress(wallet), TOPIC_REVOKED);
+        List<AuditEvent> all = new ArrayList<>();
+        all.addAll(issued);
+        all.addAll(updated);
+        all.addAll(revoked);
+        return all;
+    }
+
+    @Override public int getTotalCredentialCount() throws IOException, InterruptedException {
+        // nextCredentialId starts at 1, so total issued = nextCredentialId - 1
+        // We don't have a direct getter, so derive from institution list issuance events
+        // Return a count from all CredentialIssued events globally
+        try {
+            String payload = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_getLogs\",\"params\":[{"
+                + "\"fromBlock\":\"0x0\",\"toBlock\":\"latest\","
+                + "\"address\":" + JsonUtil.quote(config.contractAddress()) + ","
+                + "\"topics\":[" + JsonUtil.quote(TOPIC_ISSUED) + "]}]}";
+            return parseLogs(rpc(payload)).size();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     @Override public List<AuditEvent> getStudentActivity(String wallet) throws IOException, InterruptedException {

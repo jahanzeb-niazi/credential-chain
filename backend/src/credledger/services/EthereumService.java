@@ -17,4 +17,5 @@ public interface EthereumService {
     Map<String, Object> getRegulatorProfile(String wallet) throws IOException, InterruptedException;
     Map<String, Object> getInstitutionProfile(String wallet) throws IOException, InterruptedException;
     List<AuditEvent> getStudentActivity(String wallet) throws IOException, InterruptedException;
+    int getTotalCredentialCount() throws IOException, InterruptedException;
 }

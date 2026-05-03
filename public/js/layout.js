@@ -1,6 +1,5 @@
 import { icons } from "./icons.js";
 
-// Public site header (landing / student pages)
 export function siteHeader(currentPath) {
   const isActive = (p) => (currentPath === p || (p !== "/" && currentPath.startsWith(p))) ? "active" : "";
   return `
@@ -40,12 +39,10 @@ export function siteFooter() {
   </footer>`;
 }
 
-// Public layout wrapper
 export function publicLayout(currentPath, body) {
   return `${siteHeader(currentPath)}<main>${body}</main>${siteFooter()}`;
 }
 
-// Role console layout (sidebar)
 export function roleShell({ role, roleLabel, accent = "navy", currentPath, items, body }) {
   const navItems = items.map(it => {
     const active = currentPath === it.to ? "active" : "";
@@ -75,7 +72,6 @@ export function roleShell({ role, roleLabel, accent = "navy", currentPath, items
   </div>`;
 }
 
-// Page header used inside role consoles
 export function pageHeader({ eyebrow, title, description, actions = "" }) {
   return `
   <div class="page-header">
@@ -98,7 +94,6 @@ export function emptyState({ icon, title, description, action = "" }) {
   </div>`;
 }
 
-// Wire interactivity that the rendered HTML expects.
 export function wirePublicHeader() {
   const trigger = document.getElementById("consoles-trigger");
   const dd = document.getElementById("consoles-dd");
@@ -111,8 +106,23 @@ export function wirePublicHeader() {
       if (!dd.contains(e.target)) dd.classList.remove("open");
     });
   }
-  const cw = document.getElementById("connect-wallet");
-  if (cw) cw.addEventListener("click", () => {
-    import("./hooks/wallet.js").then(m => m.wallet.connect());
+  _wireWalletButton();
+}
+
+export function wireRoleHeader() {
+  _wireWalletButton();
+}
+
+function _wireWalletButton() {
+  import("./hooks/wallet.js").then(({ wallet }) => {
+    const btns = document.querySelectorAll("#connect-wallet, #connect-wallet-2");
+    btns.forEach(btn => {
+      btn.addEventListener("click", () =>
+        wallet.connect().catch(e =>
+          import("./utils/dom.js").then(m => m.notice(e.message, "error"))
+        )
+      );
+    });
+    wallet._updateButtons();
   });
 }
