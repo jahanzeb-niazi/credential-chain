@@ -10,7 +10,7 @@ public record AppConfig(
 ) {
     public static AppConfig fromEnvironment() {
         return new AppConfig(
-            readInt("PORT", 9090),
+            readInt("PORT", 9000),
             read("PINATA_JWT", ""),
             read("ETH_RPC_URL", ""),
             read("CONTRACT_ADDRESS", ""),

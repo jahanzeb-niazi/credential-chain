@@ -4,14 +4,16 @@ export default defineConfig({
   root: "public",
   publicDir: false,
   server: {
-    host: "::",
-    port: 8080,
+    host: "0.0.0.0",
+    port: 5000,
     strictPort: true,
+    allowedHosts: true,
   },
   preview: {
-    host: "::",
-    port: 8080,
+    host: "0.0.0.0",
+    port: 5000,
     strictPort: true,
+    allowedHosts: true,
   },
   build: {
     outDir: "../dist",
