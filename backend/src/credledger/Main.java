@@ -23,6 +23,7 @@ public final class Main {
         new CredentialController(router, credentialService).register();
         new VerificationController(router, credentialService).register();
         new InstitutionController(router, credentialService).register();
+        new RegistryController(router, credentialService).register();
 
         HttpServer server = HttpServer.create(new InetSocketAddress(config.port()), 0);
         server.createContext("/", router);
